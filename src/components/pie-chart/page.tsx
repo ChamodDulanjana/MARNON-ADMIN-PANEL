@@ -109,7 +109,7 @@ const PieChartByCategory = () => {
                     ) : (
                         <ChartContainer
                             config={chartConfig}
-                            className="mx-auto aspect-square h-[280px] min-[1260px]:w-full"
+                            className="mx-auto aspect-square min-[460px]:h-[280px] min-[1260px]:w-full"
                         >
                             <PieChart>
                                 <ChartTooltip

@@ -88,6 +88,11 @@ const TablePopularProducts = () => {
                                 <TableColumn
                                     key={column.uid}
                                     align={"start"}
+                                    className={`
+                                    ${column.uid === 'item_code' && 'min-w-32'} 
+                                    ${column.uid === 'name' && 'min-w-80'} 
+                                    ${column.uid === 'category' && 'min-w-24'} 
+                                    ${column.uid === 'sales' && 'min-w-24'}`}
                                 >
                                     {column.name}
                                 </TableColumn>
