@@ -2,7 +2,7 @@ import {Outlet, useLocation} from "react-router-dom";
 import {SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar.tsx";
 import SideNavigation from "@/layouts/side-navigation/page.tsx";
 import {Separator} from "@radix-ui/react-separator";
-import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip.tsx"
+import {Tooltip} from "@heroui/react";
 
 
 let header = 'Dashboard';
@@ -45,9 +45,8 @@ const Layout = () => {
                         {/* Page header */}
                         <div className="mb-10">
                             <div className="flex mb-2">
-                                <Tooltip>
-                                    <TooltipTrigger asChild><SidebarTrigger /></TooltipTrigger>
-                                    <TooltipContent>Toggle Navigation</TooltipContent>
+                                <Tooltip content="Toggle Navigation" placement="top">
+                                    <SidebarTrigger />
                                 </Tooltip>
                                 <Separator className="mr-2 ml-1 h-[15px] mt-[6px] border-[1px] border-gray-300" orientation="vertical"/>
                                 <h1 className="text-2xl font-semibold -mt-[4px]">{header}</h1>

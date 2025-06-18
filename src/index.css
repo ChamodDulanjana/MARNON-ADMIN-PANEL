@@ -6,6 +6,20 @@
 
 @custom-variant dark (&:is(.dark *));
 
+:root {
+  --color-men: #74b9ff;
+  --color-women: #ff7675;
+  --color-kid: #A3CB38;
+
+  --color-men-pieChart: #9AECDB;
+  --color-women-pieChart: #f8a5c2;
+  --color-kid-pieChart: #f7d794;
+
+  --color-men-barChart: #74b9ff;
+  --color-women-barChart: #f7d794;
+  --color-kid-barChart: #fab1a0;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
