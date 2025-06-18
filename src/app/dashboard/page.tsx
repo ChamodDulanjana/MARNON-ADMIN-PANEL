@@ -1,6 +1,6 @@
 import {Button} from "@/components/ui/button.tsx";
 
-const AdminDashboard = () => {
+const Dashboard = () => {
     return (
         <div>
             <Button>
@@ -10,4 +10,4 @@ const AdminDashboard = () => {
     );
 };
 
-export default AdminDashboard;
+export default Dashboard;
