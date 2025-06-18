@@ -1,6 +1,6 @@
 import {
     Sidebar,
-    SidebarContent, SidebarFooter,
+    SidebarContent,
     SidebarGroup,
     SidebarGroupContent,
     SidebarGroupLabel,
@@ -18,7 +18,7 @@ const SideNavigation = () => {
         <div>
             <Sidebar collapsible="icon">
                 <SidebarContent className="bg-black text-white">
-                    <SidebarGroup>
+                    <SidebarGroup className='h-full'>
                         <SidebarGroupLabel className="text-white">Admin panel</SidebarGroupLabel>
                         <SidebarGroupContent>
                             <SidebarMenu className="pt-2 gap-2">
@@ -34,20 +34,21 @@ const SideNavigation = () => {
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>
                                 ))}
+
+                                <SidebarMenuItem key={"exit-admin-panel"} className='absolute bottom-4'>
+                                    <SidebarMenuButton asChild className='w-full pr-24'>
+                                        <a href={VITE_WEB_URL}>
+                                            <span>
+                                                <TbArrowBackUp className='mt-[1px] text-lg'/>
+                                            </span>
+                                            <span className="text-[14px]">Exit Admin Panel</span>
+                                        </a>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
                             </SidebarMenu>
                         </SidebarGroupContent>
                     </SidebarGroup>
                 </SidebarContent>
-                <SidebarFooter className='bg-black'>
-                    <div className="pb-4">
-                        <a href={VITE_WEB_URL}  rel="noopener noreferrer">
-                            <div className='flex gap-2 ml-1 text-white hover:bg-white hover:text-red-600 py-2 pl-2 rounded-md transition-colors duration-200'>
-                                <TbArrowBackUp className='mt-[1px] text-lg'/>
-                                <span className="text-[14px]">Exit Admin Panel</span>
-                            </div>
-                        </a>
-                    </div>
-                </SidebarFooter>
             </Sidebar>
         </div>
     );
