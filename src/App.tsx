@@ -1,4 +1,5 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import AdminDashboard from "@/pages/admin-dashboard.tsx";
 
 function App() {
 
@@ -6,7 +7,7 @@ function App() {
     <div>
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<div>Home Page</div>} />
+                <Route path="/" element={<AdminDashboard />} />
             </Routes>
         </BrowserRouter>
     </div>
