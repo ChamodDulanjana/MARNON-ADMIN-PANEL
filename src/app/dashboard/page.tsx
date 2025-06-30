@@ -1,7 +1,7 @@
 import LoadingAnimation from "@/components/loading-animation/page";
 import NotFound from "@/pages/notFound.tsx";
 import {useQuery} from "@tanstack/react-query";
-import {getMonthlyRevenue, getMonthlySales, getSalesCountByDate} from "@/services/userProductService.ts";
+import {getMonthlyRevenue, getMonthlySales, getSalesCountByDate} from "@/services/orderService.ts";
 import {getAllCustomersCount} from "@/services/userService.ts";
 import AreaChart from "@/components/area-chart/page.tsx";
 import BarChart from "@/components/bar-chart/page.tsx";
@@ -82,7 +82,7 @@ const Dashboard = () => {const getAllInfoCardsData = async () => {
                         Monthly sales
                     </h2>
                     <Tooltip content={Intl.NumberFormat().format(infoCardsData?.monthlySales)} placement={'bottom-start'}>
-                        <p className='text-lg font-bold text-red-600'>{formatNumber(infoCardsData?.monthlySales)}</p>
+                        <p className='text-lg font-bold text-red-600'><span className='mr-2'>LKR</span>{formatNumber(infoCardsData?.monthlySales)}</p>
                     </Tooltip>
                 </div>
 
@@ -93,7 +93,7 @@ const Dashboard = () => {const getAllInfoCardsData = async () => {
                         Monthly Revenue
                     </h2>
                     <Tooltip content={Intl.NumberFormat().format(infoCardsData?.monthlyRevenue)} placement={'bottom-start'}>
-                        <p className='text-lg font-bold text-green-600'>{formatNumber(infoCardsData?.monthlyRevenue)}</p>
+                        <p className='text-lg font-bold text-green-600'><span className='mr-2'>LKR</span>{formatNumber(infoCardsData?.monthlyRevenue)}</p>
                     </Tooltip>
                 </div>
 

@@ -1,6 +1,6 @@
 import {axiosInstanceWithCredentials} from "@/api/axiosInstance.ts";
 
-const SUB_URL: string = '/user-product';
+const SUB_URL: string = '/order';
 
 export const getSalesCountByMonthAndYear = async (month: number, year: number) => {
     const response = await axiosInstanceWithCredentials.get(SUB_URL + '/all/sales-count/by-month-year', {

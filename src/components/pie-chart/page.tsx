@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/chart'
 import type {PieSectorDataItem} from "recharts/types/polar/Pie";
 import {useState} from "react";
-import {getSalesCountByMonthAndYear} from "@/services/userProductService.ts";
+import {getSalesCountByMonthAndYear} from "@/services/orderService.ts";
 import {useQuery} from "@tanstack/react-query";
 import LoadingAnimation from "@/components/loading-animation/page.tsx";
 import NotFound from "@/pages/notFound.tsx";

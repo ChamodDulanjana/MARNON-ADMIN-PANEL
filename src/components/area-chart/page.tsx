@@ -15,7 +15,7 @@ import {
     ChartTooltipContent,
 } from '@/components/ui/chart'
 import {useState} from "react";
-import {getSalesCountOfDayRange} from "@/services/userProductService.ts";
+import {getSalesCountOfDayRange} from "@/services/orderService.ts";
 import {useQuery} from "@tanstack/react-query";
 import LoadingAnimation from "@/components/loading-animation/page.tsx";
 import NotFound from "@/pages/notFound.tsx";
