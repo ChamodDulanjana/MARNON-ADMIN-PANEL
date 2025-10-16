@@ -8,7 +8,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { menus} from "@/assets/data/menus.ts"
+import { menus} from "@/lib/menus.ts"
 import { TbArrowBackUp } from "react-icons/tb";
 
 const VITE_WEB_URL: string = import.meta.env.VITE_WEB_URL ?? '';
