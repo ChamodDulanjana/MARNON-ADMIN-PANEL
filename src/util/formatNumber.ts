@@ -1,5 +1,6 @@
 
 export const formatNumber = (num: number): string => {
+    num = num || 0; // Ensure num is a number
     if (num >= 1_000_000_000) {
         return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';
     }
@@ -9,5 +10,5 @@ export const formatNumber = (num: number): string => {
     if (num >= 1_000) {
         return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
     }
-    return num.toString();
+    return num.toString() || '0';
 };
