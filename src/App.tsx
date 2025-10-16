@@ -2,6 +2,7 @@ import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import Layout from "@/pages/layout.tsx";
 import Dashboard from "@/app/dashboard/page.tsx";
 import {HeroUIProvider, ToastProvider} from "@heroui/react";
+import ViewSize from "@/app/size-management/view-size/page.tsx";
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
                         <Route index element={<Navigate to="dashboard" replace />} />
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="products" element={<div />} />
+                        <Route path="sizes/view-sizes" element={<ViewSize />} />
                     </Route>
                 </Routes>
             </HeroUIProvider>

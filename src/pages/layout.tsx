@@ -21,7 +21,7 @@ const Layout = () => {
     } else if (location.pathname.endsWith('/category')) {
         header = 'Category';
         description = 'Manage product categories here.';
-    } else if (location.pathname.endsWith('/sizes')) {
+    } else if (location.pathname.endsWith('/sizes/view-sizes')) {
         header = 'Sizes';
         description = 'Manage product sizes here.';
     } else if (location.pathname.endsWith('/users')) {
