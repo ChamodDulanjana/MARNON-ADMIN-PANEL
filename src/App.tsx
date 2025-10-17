@@ -3,6 +3,7 @@ import Layout from "@/pages/layout.tsx";
 import Dashboard from "@/app/dashboard/page.tsx";
 import {HeroUIProvider, ToastProvider} from "@heroui/react";
 import ViewSize from "@/app/size-management/view-size/page.tsx";
+import AddSize from "@/app/size-management/add-size/page.tsx";
 
 function App() {
 
@@ -20,7 +21,14 @@ function App() {
                         <Route index element={<Navigate to="dashboard" replace />} />
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="products" element={<div />} />
-                        <Route path="sizes/view-sizes" element={<ViewSize />} />
+
+                        {/* Group sizes routes */}
+                        <Route path="sizes">
+                            {/* Redirect /admin-panel/sizes → /admin-panel/sizes/view-sizes */}
+                            <Route index element={<Navigate to="view-sizes" replace />} />
+                            <Route path="view-sizes" element={<ViewSize />} />
+                            <Route path="add-sizes" element={<AddSize />} />
+                        </Route>
                     </Route>
                 </Routes>
             </HeroUIProvider>

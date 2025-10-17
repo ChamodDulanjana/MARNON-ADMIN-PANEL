@@ -2,8 +2,10 @@ import {Input, Button} from "@heroui/react";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import {useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 const ViewSize = () => {
+    const navigate = useNavigate();
     const [searchText, setSearchText] = useState<string>('');
 
     const searchTextHandler = () => {
@@ -26,7 +28,10 @@ const ViewSize = () => {
                         onClick={searchTextHandler}
                     />}
                 />
-                <Button className="bg-blue-500 text-white font-semibold tracking-wide" >
+                <Button
+                    onPress={() => navigate("/admin-panel/sizes/add-sizes")}
+                    className="bg-blue-500 text-white font-semibold tracking-wide"
+                >
                     <IoMdAddCircleOutline className="text-xl -mr-1"/>
                     New
                 </Button>
