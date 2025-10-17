@@ -1,4 +1,4 @@
-import LoadingAnimation from "@/components/loading-animation/page";
+import LoadingAnimation from "@/pages/loading.tsx";
 import NotFound from "@/pages/notFound.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {getMonthlyRevenue, getMonthlySales, getSalesCountByDate} from "@/services/orderService.ts";

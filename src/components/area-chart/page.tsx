@@ -17,7 +17,7 @@ import {
 import {useState} from "react";
 import {getSalesCountOfDayRange} from "@/services/orderService.ts";
 import {useQuery} from "@tanstack/react-query";
-import LoadingAnimation from "@/components/loading-animation/page.tsx";
+import LoadingAnimation from "@/pages/loading.tsx";
 import NotFound from "@/pages/notFound.tsx";
 
 type ChartDataType = {

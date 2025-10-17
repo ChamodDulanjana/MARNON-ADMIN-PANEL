@@ -3,7 +3,7 @@ import {Table, Pagination, TableBody, TableCell, TableColumn, TableHeader, Table
 import {useEffect, useState} from "react";
 import type {PaginationDTO} from "@/models/PaginationDTO.ts";
 import {getPopularProductsForAdmin} from "@/services/productService.ts";
-import LoadingAnimation from "@/components/loading-animation/page.tsx";
+import LoadingAnimation from "@/pages/loading.tsx";
 import NotFound from "@/pages/notFound.tsx";
 import {useQuery} from "@tanstack/react-query";
 

@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import type {SizeDTO} from "@/models/sizeDTO.ts";
 import {getAllSizes} from "@/services/sizeService.ts";
-import LoadingAnimation from "@/components/loading-animation/page.tsx";
+import LoadingAnimation from "@/pages/loading.tsx";
 import NotFound from "@/pages/notFound.tsx";
 
 const columns = [
@@ -48,7 +48,7 @@ const ViewSize = () => {
         console.log(sizeList)
     }
 
-    if (isLoading) return <NotFound />;
+    if (isLoading) return <LoadingAnimation />;
     if (isError)   return <NotFound />;
 
     return (
