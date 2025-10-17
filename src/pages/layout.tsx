@@ -5,8 +5,8 @@ import {Separator} from "@radix-ui/react-separator";
 import {Tooltip} from "@heroui/react";
 
 
-let header = 'Dashboard';
-let description = 'Welcome to the admin panel. Here you can manage products, orders, and users.';
+let header = '';
+let description = '';
 
 const Layout = () => {
     const location = useLocation();
@@ -24,6 +24,9 @@ const Layout = () => {
     } else if (location.pathname.endsWith('/sizes/view-sizes')) {
         header = 'Sizes';
         description = 'Manage product sizes here.';
+    } else if (location.pathname.endsWith('/sizes/add-sizes')) {
+        header = 'Add Sizes';
+        description = 'Add new sizes here.';
     } else if (location.pathname.endsWith('/users')) {
         header = 'Users';
         description = 'Manage users and their roles here.';
