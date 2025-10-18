@@ -11,11 +11,11 @@ import {
 } from "@heroui/react";
 import { IoMdAdd } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
-import {useEffect, useMemo, useState} from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import type {SizeDTO} from "@/models/sizeDTO.ts";
-import {getAllSizes, changeSizeStatus} from "@/services/sizeService.ts";
+import {getAllSizesByPagination, changeSizeStatus} from "@/services/sizeService.ts";
 import LoadingAnimation from "@/pages/loading.tsx";
 import NotFound from "@/pages/notFound.tsx";
 import { IoIosSwitch } from "react-icons/io";
@@ -24,6 +24,17 @@ import EditStatus from "@/components/edit-status/page.tsx";
 import {useAsyncList} from "@react-stately/data";
 import CustomPagination from "@/components/custom-pagination/page.tsx";
 
+interface metaProps {
+    total: number,
+    page: number,
+    limit: number,
+    totalPages: number,
+}
+
+interface PaginatedSizeResponseDTO {
+    sizeList: SizeDTO[],
+    meta: metaProps,
+}
 
 const columns = [
     { key: 'id', label: 'Id' },
@@ -43,26 +54,21 @@ const ViewSize = () => {
     const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
     const [status, setStatus] = useState<{active: boolean, sid: number}>({active: true, sid: 0});
     const [page, setPage] = useState(1);
-    const rowsPerPage = 5;
+    const limit = 5;
 
     const {
         isLoading,
         isError,
-        data: sizeList = [],
-    } = useQuery<SizeDTO[]>({
-        queryKey: ['size-by-id'],
-        queryFn: () => getAllSizes()
+        data = {sizeList: [], meta: {total: 0,  page: page, limit: limit, totalPages: 0}}
+    } = useQuery<PaginatedSizeResponseDTO>({
+        queryKey: ['size-by-id', page],
+        queryFn: () => getAllSizesByPagination({page: page, limit: limit}),
     });
-
-    // move to first page when sizeList changes
-    useEffect(() => {
-        setPage(1);
-    }, [sizeList]);
 
     const searchTextHandler = () => {
         // Handle search logic here
         console.log("Searching for:", searchText);
-        console.log(sizeList)
+        console.log(data)
     }
 
     /*Change Status Btn*/
@@ -70,7 +76,8 @@ const ViewSize = () => {
         await changeSizeStatus(status.sid, status.active ? 0 : 1).then(async (res) => {
             if (res.statusCode === 200) {
                 addToast({
-                    title: "Status Changed Successfully",
+                    title: "Success!",
+                    description: `Size has been ${status.active ? 'deactivated' : 'activated'} successfully.`,
                     color: "success",
                 });
                 // Refresh data from backend (no full reload)
@@ -94,23 +101,12 @@ const ViewSize = () => {
         });
     }
 
-
-    // Pagination logic
-    const pages = Math.ceil(sizeList.length / rowsPerPage);
-
-    const paginatedList: SizeDTO[] = useMemo(() => {
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-
-        return sizeList.slice(start, end);
-    }, [page, sizeList]);
-
     /*Sorting mechanism*/
     const list = useAsyncList({
-        async load() {return {items: paginatedList};},
+        async load() {return {items: data.sizeList};},
         async sort({sortDescriptor}) {
             return {
-                items: paginatedList.sort((a, b) => {
+                items: data.sizeList.sort((a, b) => {
                     const first = (a as never)[sortDescriptor.column];
                     const second = (b as never)[sortDescriptor.column];
                     let cmp = (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
@@ -124,7 +120,6 @@ const ViewSize = () => {
             };
         },
     });
-
 
 
     if (isLoading) return <LoadingAnimation />;
@@ -167,7 +162,7 @@ const ViewSize = () => {
                     )}
                 </TableHeader>
                 <TableBody emptyContent={"No rows to display."}>
-                    {paginatedList.map((row) =>
+                    {data.sizeList.map((row: SizeDTO) =>
                         <TableRow key={row.id}>
                             <TableCell>{row.id}</TableCell>
                             <TableCell>{row.size}</TableCell>
@@ -205,7 +200,7 @@ const ViewSize = () => {
             {/*Pagination*/}
             <CustomPagination
                 currentPage={page}
-                pages={pages}
+                pages={data.meta.totalPages}
                 setPage={setPage}
             />
 
