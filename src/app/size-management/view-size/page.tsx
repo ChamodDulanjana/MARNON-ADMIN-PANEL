@@ -7,7 +7,7 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    Chip
+    Chip, Tooltip, useDisclosure, addToast
 } from "@heroui/react";
 import { IoMdAdd } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
@@ -15,9 +15,12 @@ import {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import type {SizeDTO} from "@/models/sizeDTO.ts";
-import {getAllSizes} from "@/services/sizeService.ts";
+import {getAllSizes, changeSizeStatus} from "@/services/sizeService.ts";
 import LoadingAnimation from "@/pages/loading.tsx";
 import NotFound from "@/pages/notFound.tsx";
+import { IoIosSwitch } from "react-icons/io";
+import { CiEdit } from "react-icons/ci";
+import EditStatus from "@/components/edit-status/page.tsx";
 
 const columns = [
     { key: 'id', label: 'Id' },
@@ -27,11 +30,14 @@ const columns = [
     { key: 'createBy', label: 'Create By' },
     { key: 'modifyDate', label: 'Modify Date' },
     { key: 'modifyBy', label: 'Modify By' },
+    { key: 'actions', label: 'Actions' },
 ];
 
 const ViewSize = () => {
     const navigate = useNavigate();
     const [searchText, setSearchText] = useState<string>('');
+    const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
+    const [status, setStatus] = useState<{active: boolean, sid: number}>({active: true, sid: 0});
 
     const {
         isLoading,
@@ -46,6 +52,32 @@ const ViewSize = () => {
         // Handle search logic here
         console.log("Searching for:", searchText);
         console.log(sizeList)
+    }
+
+    const changeStatusHandler = async () => {
+        await changeSizeStatus(status.sid, status.active ? 0 : 1).then((res) => {
+            if (res.statusCode === 200) {
+                addToast({
+                    title: "Status Changed Successfully",
+                    color: "success",
+                });
+            } else {
+                addToast({
+                    title: "Status Change Failed",
+                    color: "danger",
+                    description: res.message,
+                });
+            }
+            onClose();
+        }).catch((error) => {
+            const backendResponse = error.response?.data;
+            addToast({
+                title: "Status Change Failed",
+                color: "danger",
+                description: backendResponse?.message || "An unexpected error occurred.",
+            });
+            onClose();
+        });
     }
 
     if (isLoading) return <LoadingAnimation />;
@@ -96,10 +128,37 @@ const ViewSize = () => {
                             <TableCell>{row.createBy}</TableCell>
                             <TableCell>{row.modifyDate && row.modifyDate.split('T')[0]}</TableCell>
                             <TableCell>{row.modifyBy}</TableCell>
+                            <TableCell>
+                                <div className="relative flex items-center gap-2">
+                                    <Tooltip content="Edit">
+                                      <span className="text-lg text-default-600 cursor-pointer active:opacity-60">
+                                        <CiEdit />
+                                      </span>
+                                    </Tooltip>
+                                    <Tooltip content="Change Status">
+                                      <span className="text-lg text-default-600 cursor-pointer active:opacity-70">
+                                        <IoIosSwitch onClick={() => {
+                                            setStatus({active: row.isActive, sid: row.id ? row.id : 0});
+                                            onOpen();
+                                        }}/>
+                                      </span>
+                                    </Tooltip>
+                                </div>
+                            </TableCell>
                         </TableRow>
                     )}
                 </TableBody>
             </Table>
+
+            {/*Edit status modal*/}
+            <EditStatus
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                onClose={onClose}
+                status={status.active ? "deactivate" : "activate"}
+                menu={"size"}
+                method={changeStatusHandler}
+            />
         </div>
     );
 };
