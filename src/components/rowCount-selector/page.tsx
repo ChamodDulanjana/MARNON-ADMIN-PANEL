@@ -1,5 +1,5 @@
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { FaChevronDown } from "react-icons/fa6";
 
 const rowCountOptions = [
@@ -8,8 +8,12 @@ const rowCountOptions = [
     { key: "15", label: "15" },
 ];
 
-const RowCountSelector = () => {
-    const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set(["5"]));
+interface Props {
+    selectedKeys: Set<string>;
+    setSelectedKeys: (keys: Set<string>) => void;
+}
+
+const RowCountSelector = ({selectedKeys, setSelectedKeys}: Props) => {
 
     const selectedValue = useMemo(() => {
         const key = Array.from(selectedKeys)[0];

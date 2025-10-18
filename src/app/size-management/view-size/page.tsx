@@ -7,16 +7,15 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    Chip, Tooltip, useDisclosure, addToast,
+    Chip, Tooltip, useDisclosure, addToast, Spinner,
 } from "@heroui/react";
 import { IoMdAdd } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import type {SizeDTO} from "@/models/sizeDTO.ts";
 import {getAllSizesByPagination, changeSizeStatus} from "@/services/sizeService.ts";
-import LoadingAnimation from "@/pages/loading.tsx";
 import NotFound from "@/pages/notFound.tsx";
 import { IoIosSwitch } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
@@ -55,15 +54,16 @@ const ViewSize = () => {
     const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
     const [status, setStatus] = useState<{active: boolean, sid: number}>({active: true, sid: 0});
     const [page, setPage] = useState(1);
-    const limit = 5;
+    const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set(["5"]));
+    const limit: number = Array.from(selectedKeys).map(key => parseInt(key, 10))[0];
 
     const {
         isLoading,
         isError,
-        data = {sizeList: [], meta: {total: 0,  page: page, limit: limit, totalPages: 0}}
+        data = {sizeList: [], meta: {total: 0,  page, limit, totalPages: 0}}
     } = useQuery<PaginatedSizeResponseDTO>({
-        queryKey: ['size-by-id', page],
-        queryFn: () => getAllSizesByPagination({page: page, limit: limit}),
+        queryKey: ['size-by-id', page, limit],
+        queryFn: () => getAllSizesByPagination({page, limit}),
     });
 
     const searchTextHandler = () => {
@@ -122,8 +122,13 @@ const ViewSize = () => {
         },
     });
 
+    // Reset to first page when row count changes
+    useEffect(() => {
+        setPage(1);
+    }, [limit]);
 
-    if (isLoading) return <LoadingAnimation />;
+
+    // if (isLoading) return <LoadingAnimation />;
     if (isError)   return <NotFound />;
 
     return (
@@ -155,14 +160,20 @@ const ViewSize = () => {
                 aria-label="Example table with dynamic content"
                 sortDescriptor={list.sortDescriptor}
                 onSortChange={list.sort}
-                bottomContent={<RowCountSelector />}
+                bottomContent={
+                    <RowCountSelector selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys}/>
+                }
             >
                 <TableHeader>
                     {columns.map((column) =>
                         <TableColumn key={column.key} allowsSorting>{column.label}</TableColumn>
                     )}
                 </TableHeader>
-                <TableBody emptyContent={"No rows to display."}>
+                <TableBody
+                    emptyContent={"No rows to display."}
+                    loadingContent={<Spinner />}
+                    loadingState={isLoading ? "loading" : "idle"}
+                >
                     {data.sizeList.map((row: SizeDTO) =>
                         <TableRow key={row.id}>
                             <TableCell>{row.id}</TableCell>

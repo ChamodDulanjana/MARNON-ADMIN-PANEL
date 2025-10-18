@@ -10,6 +10,7 @@ const CustomPagination = ({currentPage, pages, setPage}: Props) => {
     return (
         <div className="flex w-full justify-center mt-6">
             <Pagination
+                key={pages}
                 isCompact
                 showControls
                 showShadow
