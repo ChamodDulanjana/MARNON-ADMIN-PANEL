@@ -13,7 +13,7 @@ import { IoMdAdd } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import {useState} from "react";
 import { useNavigate } from "react-router-dom";
-import {useQuery} from "@tanstack/react-query";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import type {SizeDTO} from "@/models/sizeDTO.ts";
 import {getAllSizes, changeSizeStatus} from "@/services/sizeService.ts";
 import LoadingAnimation from "@/pages/loading.tsx";
@@ -35,6 +35,7 @@ const columns = [
 
 const ViewSize = () => {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const [searchText, setSearchText] = useState<string>('');
     const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
     const [status, setStatus] = useState<{active: boolean, sid: number}>({active: true, sid: 0});
@@ -55,12 +56,14 @@ const ViewSize = () => {
     }
 
     const changeStatusHandler = async () => {
-        await changeSizeStatus(status.sid, status.active ? 0 : 1).then((res) => {
+        await changeSizeStatus(status.sid, status.active ? 0 : 1).then(async (res) => {
             if (res.statusCode === 200) {
                 addToast({
                     title: "Status Changed Successfully",
                     color: "success",
                 });
+                // Refresh data from backend (no full reload)
+                await queryClient.invalidateQueries({ queryKey: ['size-by-id'] });
             } else {
                 addToast({
                     title: "Status Change Failed",

@@ -9,7 +9,6 @@ export const getAllSizes = async () => {
 
 export const changeSizeStatus = async (id: number, isActive: 0 | 1) => {
     const response = await axiosInstanceWithCredentials.patch(`${SUB_URL}/status/change/${id}/${isActive}`);
-    console.log(response.data);
     return response.data;
 }
 
