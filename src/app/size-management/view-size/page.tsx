@@ -23,6 +23,7 @@ import { CiEdit } from "react-icons/ci";
 import EditStatus from "@/components/edit-status/page.tsx";
 import {useAsyncList} from "@react-stately/data";
 import CustomPagination from "@/components/custom-pagination/page.tsx";
+import RowCountSelector from "@/components/rowCount-selector/page.tsx";
 
 interface metaProps {
     total: number,
@@ -151,10 +152,10 @@ const ViewSize = () => {
 
             {/*Table content*/}
             <Table
-                removeWrapper
                 aria-label="Example table with dynamic content"
                 sortDescriptor={list.sortDescriptor}
                 onSortChange={list.sort}
+                bottomContent={<RowCountSelector />}
             >
                 <TableHeader>
                     {columns.map((column) =>
