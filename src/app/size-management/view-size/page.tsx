@@ -21,6 +21,8 @@ import NotFound from "@/pages/notFound.tsx";
 import { IoIosSwitch } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 import EditStatus from "@/components/edit-status/page.tsx";
+import {useAsyncList} from "@react-stately/data";
+
 
 const columns = [
     { key: 'id', label: 'Id' },
@@ -49,12 +51,33 @@ const ViewSize = () => {
         queryFn: () => getAllSizes()
     });
 
+    /*Sorting mechanism*/
+    const list = useAsyncList({
+        async load() {return {items: sizeList};},
+        async sort({sortDescriptor}) {
+            return {
+                items: sizeList.sort((a, b) => {
+                    const first = (a as never)[sortDescriptor.column];
+                    const second = (b as never)[sortDescriptor.column];
+                    let cmp = (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
+
+                    if (sortDescriptor.direction === "descending") {
+                        cmp *= -1;
+                    }
+
+                    return cmp;
+                }),
+            };
+        },
+    });
+
     const searchTextHandler = () => {
         // Handle search logic here
         console.log("Searching for:", searchText);
         console.log(sizeList)
     }
 
+    /*Change Status Btn*/
     const changeStatusHandler = async () => {
         await changeSizeStatus(status.sid, status.active ? 0 : 1).then(async (res) => {
             if (res.statusCode === 200) {
@@ -111,10 +134,15 @@ const ViewSize = () => {
             </div>
 
             {/*Table content*/}
-            <Table removeWrapper aria-label="Example table with dynamic content">
+            <Table
+                removeWrapper
+                aria-label="Example table with dynamic content"
+                sortDescriptor={list.sortDescriptor}
+                onSortChange={list.sort}
+            >
                 <TableHeader>
                     {columns.map((column) =>
-                        <TableColumn key={column.key}>{column.label}</TableColumn>
+                        <TableColumn key={column.key} allowsSorting>{column.label}</TableColumn>
                     )}
                 </TableHeader>
                 <TableBody emptyContent={"No rows to display."}>
