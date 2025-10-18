@@ -7,11 +7,11 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    Chip, Tooltip, useDisclosure, addToast
+    Chip, Tooltip, useDisclosure, addToast,
 } from "@heroui/react";
 import { IoMdAdd } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
-import {useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import type {SizeDTO} from "@/models/sizeDTO.ts";
@@ -22,6 +22,7 @@ import { IoIosSwitch } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 import EditStatus from "@/components/edit-status/page.tsx";
 import {useAsyncList} from "@react-stately/data";
+import CustomPagination from "@/components/custom-pagination/page.tsx";
 
 
 const columns = [
@@ -41,6 +42,8 @@ const ViewSize = () => {
     const [searchText, setSearchText] = useState<string>('');
     const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
     const [status, setStatus] = useState<{active: boolean, sid: number}>({active: true, sid: 0});
+    const [page, setPage] = useState(1);
+    const rowsPerPage = 5;
 
     const {
         isLoading,
@@ -51,25 +54,10 @@ const ViewSize = () => {
         queryFn: () => getAllSizes()
     });
 
-    /*Sorting mechanism*/
-    const list = useAsyncList({
-        async load() {return {items: sizeList};},
-        async sort({sortDescriptor}) {
-            return {
-                items: sizeList.sort((a, b) => {
-                    const first = (a as never)[sortDescriptor.column];
-                    const second = (b as never)[sortDescriptor.column];
-                    let cmp = (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
-
-                    if (sortDescriptor.direction === "descending") {
-                        cmp *= -1;
-                    }
-
-                    return cmp;
-                }),
-            };
-        },
-    });
+    // move to first page when sizeList changes
+    useEffect(() => {
+        setPage(1);
+    }, [sizeList]);
 
     const searchTextHandler = () => {
         // Handle search logic here
@@ -105,6 +93,39 @@ const ViewSize = () => {
             onClose();
         });
     }
+
+
+    // Pagination logic
+    const pages = Math.ceil(sizeList.length / rowsPerPage);
+
+    const paginatedList: SizeDTO[] = useMemo(() => {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+
+        return sizeList.slice(start, end);
+    }, [page, sizeList]);
+
+    /*Sorting mechanism*/
+    const list = useAsyncList({
+        async load() {return {items: paginatedList};},
+        async sort({sortDescriptor}) {
+            return {
+                items: paginatedList.sort((a, b) => {
+                    const first = (a as never)[sortDescriptor.column];
+                    const second = (b as never)[sortDescriptor.column];
+                    let cmp = (parseInt(first) || first) < (parseInt(second) || second) ? -1 : 1;
+
+                    if (sortDescriptor.direction === "descending") {
+                        cmp *= -1;
+                    }
+
+                    return cmp;
+                }),
+            };
+        },
+    });
+
+
 
     if (isLoading) return <LoadingAnimation />;
     if (isError)   return <NotFound />;
@@ -146,7 +167,7 @@ const ViewSize = () => {
                     )}
                 </TableHeader>
                 <TableBody emptyContent={"No rows to display."}>
-                    {sizeList.map((row) =>
+                    {paginatedList.map((row) =>
                         <TableRow key={row.id}>
                             <TableCell>{row.id}</TableCell>
                             <TableCell>{row.size}</TableCell>
@@ -180,6 +201,13 @@ const ViewSize = () => {
                     )}
                 </TableBody>
             </Table>
+
+            {/*Pagination*/}
+            <CustomPagination
+                currentPage={page}
+                pages={pages}
+                setPage={setPage}
+            />
 
             {/*Edit status modal*/}
             <EditStatus
