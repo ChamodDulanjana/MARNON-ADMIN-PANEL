@@ -15,7 +15,7 @@ import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import type {SizeDTO} from "@/models/sizeDTO.ts";
-import {getAllSizesByPagination, changeSizeStatus} from "@/services/sizeService.ts";
+import {getAllSizesByPagination, changeSizeStatus, searchSizesByPagination} from "@/services/sizeService.ts";
 import NotFound from "@/pages/notFound.tsx";
 import { IoIosSwitch } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
@@ -66,10 +66,23 @@ const ViewSize = () => {
         queryFn: () => getAllSizesByPagination({page, limit}),
     });
 
-    const searchTextHandler = () => {
+    // Search handler
+    const searchTextHandler = async () => {
         // Handle search logic here
-        console.log("Searching for:", searchText);
-        console.log(data)
+        if (searchText.trim() === '') {
+            // If search text is empty, refetch the original data
+            await queryClient.invalidateQueries({ queryKey: ['size-by-id'] });
+            return;
+        }
+
+        const response: PaginatedSizeResponseDTO = await searchSizesByPagination(searchText, {page: 1, limit});
+        if (response && response.sizeList.length > 0) {
+            // Update data with search results
+            queryClient.setQueryData(['size-by-id', page, limit], {sizeList: response.sizeList, meta: response.meta});
+        } else {
+            // If no results found, you might want to clear the data or show a message
+            queryClient.setQueryData(['size-by-id', page, limit], {sizeList: [], meta: {total: 0, page: 1, limit, totalPages: 0}});
+        }
     }
 
     /*Change Status Btn*/
@@ -139,7 +152,7 @@ const ViewSize = () => {
                     placeholder="Search here..."
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
-                    onKeyDown={e => { if (e.key === 'Enter') searchTextHandler(); }}
+                    onKeyDown={e => { if (e.key === 'Enter') void searchTextHandler(); }}
                     className="w-2/3 md:w-1/2 lg:w-1/3"
                     endContent={<CiSearch
                         className="cursor-pointer"

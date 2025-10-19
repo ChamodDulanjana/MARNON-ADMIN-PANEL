@@ -18,6 +18,10 @@ export const getAllSizesByPagination = async (paginationDTO: PaginationDTO) => {
     return response.data.data;
 }
 
+export const searchSizesByPagination = async (searchTerm: string, paginationDTO: PaginationDTO) => {
+    const response = await axiosInstanceWithCredentials.post(`${SUB_URL}/search/sizes/by/pagination/${searchTerm}`, paginationDTO);
+    return response.data.data;
+}
 /*
 export const addSize = async (sizeDTO: any) => {
     const response = await axiosInstanceWithCredentials.post(SUB_URL + '/add', sizeDTO);
