@@ -23,6 +23,7 @@ import EditStatus from "@/components/edit-status/page.tsx";
 import {useAsyncList} from "@react-stately/data";
 import CustomPagination from "@/components/custom-pagination/page.tsx";
 import RowCountSelector from "@/components/rowCount-selector/page.tsx";
+import StatusSelector from "@/components/status-selector/page.tsx";
 
 interface metaProps {
     total: number,
@@ -55,6 +56,7 @@ const ViewSize = () => {
     const [status, setStatus] = useState<{active: boolean, sid: number}>({active: true, sid: 0});
     const [page, setPage] = useState(1);
     const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set(["5"]));
+    const [statusSelectedKeys, setStatusSelectedKeys] = useState<Set<string>>(new Set(["active"]));
     const limit: number = Array.from(selectedKeys).map(key => parseInt(key, 10))[0];
 
     const {
@@ -146,26 +148,29 @@ const ViewSize = () => {
 
     return (
         <div className="w-full">
-            <div className="w-full flex justify-between mb-8">
+            <div className="w-full flex flex-col lg:flex-row gap-4 justify-between mb-8">
                 <Input
                     type="text"
                     placeholder="Search here..."
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
                     onKeyDown={e => { if (e.key === 'Enter') void searchTextHandler(); }}
-                    className="w-2/3 md:w-1/2 lg:w-1/3"
+                    className="w-full min-[450px]:w-2/3 md:w-1/2 lg:w-1/3"
                     endContent={<CiSearch
                         className="cursor-pointer"
                         onClick={searchTextHandler}
                     />}
                 />
-                <Button
-                    onPress={() => navigate("/admin-panel/sizes/add-sizes")}
-                    className="bg-blue-500 text-white font-semibold tracking-wide"
-                >
-                    Add New
-                    <IoMdAdd className="text-xl mt-0.5 -ml-0.5"/>
-                </Button>
+                <div className="flex gap-4">
+                    <StatusSelector selectedKeys={statusSelectedKeys} setSelectedKeys={setStatusSelectedKeys} />
+                    <Button
+                        onPress={() => navigate("/admin-panel/sizes/add-sizes")}
+                        className="bg-blue-500 text-white font-semibold tracking-wide"
+                    >
+                        Add New
+                        <IoMdAdd className="text-xl mt-0.5 -ml-0.5"/>
+                    </Button>
+                </div>
             </div>
 
             {/*Table content*/}
@@ -179,7 +184,12 @@ const ViewSize = () => {
             >
                 <TableHeader>
                     {columns.map((column) =>
-                        <TableColumn key={column.key} allowsSorting>{column.label}</TableColumn>
+                        <TableColumn
+                            key={column.key}
+                            allowsSorting={['id', 'size', 'createDate', 'createBy', 'modifyDate', 'modifyBy'].includes(column.key)}
+                        >
+                            {column.label}
+                        </TableColumn>
                     )}
                 </TableHeader>
                 <TableBody
