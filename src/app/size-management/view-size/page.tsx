@@ -7,15 +7,24 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    Chip, Tooltip, useDisclosure, addToast, Spinner,
+    Chip,
+    Tooltip,
+    useDisclosure,
+    addToast,
+    Spinner,
 } from "@heroui/react";
+import {
+    getAllSizesByPagination,
+    changeSizeStatus,
+    searchSizesByPagination,
+    getSizesByStatusAndPagination
+} from "@/services/sizeService.ts";
 import { IoMdAdd } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import type {SizeDTO} from "@/models/sizeDTO.ts";
-import {getAllSizesByPagination, changeSizeStatus, searchSizesByPagination} from "@/services/sizeService.ts";
 import NotFound from "@/pages/notFound.tsx";
 import { IoIosSwitch } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
@@ -56,7 +65,7 @@ const ViewSize = () => {
     const [status, setStatus] = useState<{active: boolean, sid: number}>({active: true, sid: 0});
     const [page, setPage] = useState(1);
     const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set(["5"]));
-    const [statusSelectedKeys, setStatusSelectedKeys] = useState<Set<string>>(new Set(["active"]));
+    const [selectedStatusKeys, setSelectedStatusKeys] = useState<Set<string>>(new Set(["active"]));
     const limit: number = Array.from(selectedKeys).map(key => parseInt(key, 10))[0];
 
     const {
@@ -64,8 +73,23 @@ const ViewSize = () => {
         isError,
         data = {sizeList: [], meta: {total: 0,  page, limit, totalPages: 0}}
     } = useQuery<PaginatedSizeResponseDTO>({
-        queryKey: ['size-by-id', page, limit],
-        queryFn: () => getAllSizesByPagination({page, limit}),
+        queryKey: ['size-by-id', page, limit, Array.from(selectedStatusKeys),],
+        queryFn: () =>
+        {
+            const isActiveSelected = selectedStatusKeys.has("active");
+            const isInactiveSelected = selectedStatusKeys.has("inactive");
+
+            if (isActiveSelected && !isInactiveSelected) {
+                // Fetch only active sizes
+                return getSizesByStatusAndPagination(1, { page: 1, limit });
+            } else if (isInactiveSelected && !isActiveSelected) {
+                // Fetch only inactive sizes
+                return getSizesByStatusAndPagination(0, { page: 1, limit });
+            } else {
+                // Fetch all sizes
+                return getAllSizesByPagination({ page: 1, limit });
+            }
+        },
     });
 
     // Search handler
@@ -162,7 +186,7 @@ const ViewSize = () => {
                     />}
                 />
                 <div className="flex gap-4">
-                    <StatusSelector selectedKeys={statusSelectedKeys} setSelectedKeys={setStatusSelectedKeys} />
+                    <StatusSelector selectedKeys={selectedStatusKeys} setSelectedKeys={setSelectedStatusKeys} />
                     <Button
                         onPress={() => navigate("/admin-panel/sizes/add-sizes")}
                         className="bg-blue-500 text-white font-semibold tracking-wide"
