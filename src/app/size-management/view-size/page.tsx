@@ -81,13 +81,13 @@ const ViewSize = () => {
 
             if (isActiveSelected && !isInactiveSelected) {
                 // Fetch only active sizes
-                return getSizesByStatusAndPagination(1, { page: 1, limit });
+                return getSizesByStatusAndPagination(1, { page, limit });
             } else if (isInactiveSelected && !isActiveSelected) {
                 // Fetch only inactive sizes
-                return getSizesByStatusAndPagination(0, { page: 1, limit });
+                return getSizesByStatusAndPagination(0, { page, limit });
             } else {
                 // Fetch all sizes
-                return getAllSizesByPagination({ page: 1, limit });
+                return getAllSizesByPagination({ page, limit });
             }
         },
     });
@@ -164,8 +164,7 @@ const ViewSize = () => {
     // Reset to first page when row count changes
     useEffect(() => {
         setPage(1);
-    }, [limit]);
-
+    }, [limit, selectedStatusKeys]);
 
     // if (isLoading) return <LoadingAnimation />;
     if (isError)   return <NotFound />;
