@@ -1,5 +1,6 @@
 import {axiosInstanceWithCredentials} from "../api/axiosInstance.ts";
 import type {PaginationDTO} from "@/models/PaginationDTO.ts";
+import type {SizeSaveDTO} from "@/models/size/SizeSaveDTO.ts";
 
 const SUB_URL: string = '/size';
 
@@ -28,8 +29,7 @@ export const getSizesByStatusAndPagination = async (isActive: 0 | 1, paginationD
     return response.data.data;
 }
 
-/*
-export const addSize = async (sizeDTO: any) => {
-    const response = await axiosInstanceWithCredentials.post(SUB_URL + '/add', sizeDTO);
+export const saveSize = async (sizeDTO: SizeSaveDTO) => {
+    const response = await axiosInstanceWithCredentials.post(SUB_URL, sizeDTO);
     return response.data;
-}*/
+}
