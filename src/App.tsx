@@ -28,6 +28,7 @@ function App() {
                             <Route index element={<Navigate to="view-sizes" replace />} />
                             <Route path="view-sizes" element={<ViewSize />} />
                             <Route path="add-sizes" element={<AddSize />} />
+                            <Route path="edit-sizes/:id" element={<AddSize />} />
                         </Route>
                     </Route>
                 </Routes>

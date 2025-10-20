@@ -29,6 +29,7 @@ import CustomPagination from "@/components/custom-pagination/page.tsx";
 import RowCountSelector from "@/components/rowCount-selector/page.tsx";
 import StatusSelector from "@/components/status-selector/page.tsx";
 import AddNewBtn from "@/components/addNew-btn/page.tsx";
+import {useNavigate} from "react-router-dom";
 
 interface metaProps {
     total: number,
@@ -55,6 +56,7 @@ const columns = [
 const addNewBtnUrl = "/admin-panel/sizes/add-sizes";
 
 const ViewSize = () => {
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
     const [searchText, setSearchText] = useState<string>('');
     const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
@@ -230,7 +232,7 @@ const ViewSize = () => {
                                 <div className="relative flex items-center gap-2">
                                     <Tooltip content="Edit">
                                       <span className="text-lg text-default-600 cursor-pointer active:opacity-60">
-                                        <CiEdit />
+                                        <CiEdit onClick={() => navigate(`/admin-panel/sizes/edit-sizes/${row.id}`)}/>
                                       </span>
                                     </Tooltip>
                                     <Tooltip content="Change Status">

@@ -27,6 +27,9 @@ const Layout = () => {
     } else if (location.pathname.endsWith('/sizes/add-sizes')) {
         header = 'Add Sizes';
         description = 'Add new sizes here.';
+    } else if (location.pathname.includes('/sizes/edit-sizes/')) {
+        header = 'Edit Sizes';
+        description = 'Edit sizes here.';
     } else if (location.pathname.endsWith('/users')) {
         header = 'Users';
         description = 'Manage users and their roles here.';

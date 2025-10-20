@@ -1,13 +1,15 @@
 import {Button} from "@heroui/react";
 import {useNavigate} from "react-router-dom";
-import { FiSave } from "react-icons/fi";
-import { TbArrowBackUp } from "react-icons/tb";
+import {FiSave} from "react-icons/fi";
+import {TbArrowBackUp} from "react-icons/tb";
+import { GrDocumentUpdate } from "react-icons/gr";
 
 interface Props {
-    backUrl: string;
+    backUrl: string,
+    mode: 'edit' | 'new',
 }
 
-const BottomButtons = ({backUrl}: Props) => {
+const BottomButtons = ({backUrl, mode}: Props) => {
     const navigate = useNavigate();
 
     return (
@@ -26,8 +28,8 @@ const BottomButtons = ({backUrl}: Props) => {
                 type="submit"
                 className="bg-blue-600 text-white font-semibold tracking-wide"
             >
-                Save
-                <FiSave className="mt-1 -ml-1"/>
+                {mode === 'new' ? 'Save' : 'Update'}
+                {mode === 'new' ? <FiSave className="mt-0.5 -ml-0.5"/> : <GrDocumentUpdate className="mt-0.5 -ml-0.5"/>}
             </Button>
 
         </div>

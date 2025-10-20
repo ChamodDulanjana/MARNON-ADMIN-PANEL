@@ -45,3 +45,13 @@ export const saveSize = async (sizeDTO: SizeSaveDTO) => {
     const response = await axiosInstanceWithCredentials.post(SUB_URL, sizeDTO);
     return response.data;
 }
+
+export const getSizeById = async (id: number) => {
+    const response = await axiosInstanceWithCredentials.get(`${SUB_URL}/${id}`);
+    return response.data;
+}
+
+export const updateSize = async (id: number, sizeDTO: SizeSaveDTO) => {
+    const response = await axiosInstanceWithCredentials.patch(`${SUB_URL}/${id}`, sizeDTO);
+    return response.data;
+}
