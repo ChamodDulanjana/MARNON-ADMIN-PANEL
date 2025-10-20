@@ -48,7 +48,6 @@ const AddSize = () => {
         });
     };
 
-
     return (
         <Form onSubmit={onSubmit}>
             <Input

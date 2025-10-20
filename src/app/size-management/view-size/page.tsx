@@ -1,6 +1,5 @@
 import {
     Input,
-    Button,
     Table,
     TableHeader,
     TableColumn,
@@ -14,15 +13,11 @@ import {
     Spinner,
 } from "@heroui/react";
 import {
-    getAllSizesByPagination,
     changeSizeStatus,
     searchSizesByPagination,
-    getSizesByStatusAndPagination
 } from "@/services/sizeService.ts";
-import { IoMdAdd } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import {useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import type {SizeGetDTO} from "@/models/size/SizeGetDTO.ts";
 import NotFound from "@/pages/notFound.tsx";
@@ -33,6 +28,7 @@ import {useAsyncList} from "@react-stately/data";
 import CustomPagination from "@/components/custom-pagination/page.tsx";
 import RowCountSelector from "@/components/rowCount-selector/page.tsx";
 import StatusSelector from "@/components/status-selector/page.tsx";
+import AddNewBtn from "@/components/addNew-btn/page.tsx";
 
 interface metaProps {
     total: number,
@@ -56,9 +52,9 @@ const columns = [
     { key: 'modifyBy', label: 'Modify By' },
     { key: 'actions', label: 'Actions' },
 ];
+const addNewBtnUrl = "/admin-panel/sizes/add-sizes";
 
 const ViewSize = () => {
-    const navigate = useNavigate();
     const queryClient = useQueryClient();
     const [searchText, setSearchText] = useState<string>('');
     const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
@@ -67,47 +63,50 @@ const ViewSize = () => {
     const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set(["5"]));
     const [selectedStatusKeys, setSelectedStatusKeys] = useState<Set<string>>(new Set(["active"]));
     const limit: number = Array.from(selectedKeys).map(key => parseInt(key, 10))[0];
+    const isActiveSelected = selectedStatusKeys.has("active");
+    const isInactiveSelected = selectedStatusKeys.has("inactive");
 
     const {
         isLoading,
         isError,
         data = {sizeList: [], meta: {total: 0,  page, limit, totalPages: 0}}
     } = useQuery<PaginatedSizeResponseDTO>({
-        queryKey: ['size-by-id', page, limit, Array.from(selectedStatusKeys),],
+        queryKey: ['size-by-id', page, limit, Array.from(selectedStatusKeys)],
         queryFn: () =>
         {
-            const isActiveSelected = selectedStatusKeys.has("active");
-            const isInactiveSelected = selectedStatusKeys.has("inactive");
-
             if (isActiveSelected && !isInactiveSelected) {
-                // Fetch only active sizes
-                return getSizesByStatusAndPagination(1, { page, limit });
+                return searchSizesByPagination(searchText, 'active', { page, limit });
             } else if (isInactiveSelected && !isActiveSelected) {
-                // Fetch only inactive sizes
-                return getSizesByStatusAndPagination(0, { page, limit });
+                return searchSizesByPagination(searchText, 'inactive', { page, limit });
             } else {
-                // Fetch all sizes
-                return getAllSizesByPagination({ page, limit });
+                return searchSizesByPagination(searchText, 'all', { page, limit });
             }
         },
     });
 
     // Search handler
     const searchTextHandler = async () => {
-        // Handle search logic here
-        if (searchText.trim() === '') {
-            // If search text is empty, refetch the original data
-            await queryClient.invalidateQueries({ queryKey: ['size-by-id'] });
-            return;
-        }
-
-        const response: PaginatedSizeResponseDTO = await searchSizesByPagination(searchText, {page: 1, limit});
-        if (response && response.sizeList.length > 0) {
-            // Update data with search results
-            queryClient.setQueryData(['size-by-id', page, limit], {sizeList: response.sizeList, meta: response.meta});
+        if (isActiveSelected && !isInactiveSelected) {
+            // Search only in active sizes
+            console.log('Searching in active sizes only.');
+            await queryClient.fetchQuery({
+                queryKey: ['size-by-id', page, limit, Array.from(selectedStatusKeys)],
+                queryFn: () => searchSizesByPagination(searchText, 'active', {page, limit}),
+            });
+        } else if (isInactiveSelected && !isActiveSelected) {
+            // Search only in inactive sizes
+            console.log('Searching in inactive sizes only.');
+            await queryClient.fetchQuery({
+                queryKey: ['size-by-id', page, limit, Array.from(selectedStatusKeys)],
+                queryFn: () => searchSizesByPagination(searchText, 'inactive', {page, limit}),
+            });
         } else {
-            // If no results found, you might want to clear the data or show a message
-            queryClient.setQueryData(['size-by-id', page, limit], {sizeList: [], meta: {total: 0, page: 1, limit, totalPages: 0}});
+            // Search in all sizes
+            console.log('Searching in all sizes.');
+            await queryClient.fetchQuery({
+                queryKey: ['size-by-id', page, limit, Array.from(selectedStatusKeys)],
+                queryFn: () => searchSizesByPagination(searchText, 'all', {page, limit}),
+            });
         }
     }
 
@@ -186,13 +185,7 @@ const ViewSize = () => {
                 />
                 <div className="flex gap-4">
                     <StatusSelector selectedKeys={selectedStatusKeys} setSelectedKeys={setSelectedStatusKeys} />
-                    <Button
-                        onPress={() => navigate("/admin-panel/sizes/add-sizes")}
-                        className="bg-blue-500 text-white font-semibold tracking-wide"
-                    >
-                        Add New
-                        <IoMdAdd className="text-xl mt-0.5 -ml-0.5"/>
-                    </Button>
+                    <AddNewBtn url={addNewBtnUrl} />
                 </div>
             </div>
 

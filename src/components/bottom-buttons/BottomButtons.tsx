@@ -12,7 +12,7 @@ const BottomButtons = ({backUrl}: Props) => {
 
     return (
         <div className='w-full flex justify-end gap-4 mt-10'>
-
+            {/*Back Btn*/}
             <Button
                 onPress={() => navigate(`${backUrl}`)}
                 className="bg-gray-200 text-gray-700 font-semibold tracking-wide"
@@ -21,6 +21,7 @@ const BottomButtons = ({backUrl}: Props) => {
                 Back
             </Button>
 
+            {/*Save Btn*/}
             <Button
                 type="submit"
                 className="bg-blue-600 text-white font-semibold tracking-wide"
