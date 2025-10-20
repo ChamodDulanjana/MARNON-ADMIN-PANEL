@@ -12,7 +12,6 @@ interface Props {
 }
 
 const StatusSelector = ({selectedKeys, setSelectedKeys}: Props) => {
-
     return (
         <Dropdown>
             <DropdownTrigger>

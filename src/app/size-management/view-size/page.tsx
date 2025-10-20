@@ -24,7 +24,7 @@ import { CiSearch } from "react-icons/ci";
 import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import type {SizeDTO} from "@/models/sizeDTO.ts";
+import type {SizeGetDTO} from "@/models/size/SizeGetDTO.ts";
 import NotFound from "@/pages/notFound.tsx";
 import { IoIosSwitch } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
@@ -42,7 +42,7 @@ interface metaProps {
 }
 
 interface PaginatedSizeResponseDTO {
-    sizeList: SizeDTO[],
+    sizeList: SizeGetDTO[],
     meta: metaProps,
 }
 
@@ -111,7 +111,7 @@ const ViewSize = () => {
         }
     }
 
-    /*Change Status Btn*/
+    /*Change Status handler*/
     const changeStatusHandler = async () => {
         await changeSizeStatus(status.sid, status.active ? 0 : 1).then(async (res) => {
             if (res.statusCode === 200) {
@@ -220,7 +220,7 @@ const ViewSize = () => {
                     loadingContent={<Spinner />}
                     loadingState={isLoading ? "loading" : "idle"}
                 >
-                    {data.sizeList.map((row: SizeDTO) =>
+                    {data.sizeList.map((row: SizeGetDTO) =>
                         <TableRow key={row.id}>
                             <TableCell>{row.id}</TableCell>
                             <TableCell>{row.size}</TableCell>
@@ -229,9 +229,9 @@ const ViewSize = () => {
                                     {row.isActive ? 'Active' : 'Inactive'}
                                 </Chip>
                             </TableCell>
-                            <TableCell>{row.createDate && row.createDate.split('T')[0]}</TableCell>
+                            <TableCell>{row.createDate.split('T')[0]}</TableCell>
                             <TableCell>{row.createBy}</TableCell>
-                            <TableCell>{row.modifyDate && row.modifyDate.split('T')[0]}</TableCell>
+                            <TableCell>{row.modifyDate.split('T')[0]}</TableCell>
                             <TableCell>{row.modifyBy}</TableCell>
                             <TableCell>
                                 <div className="relative flex items-center gap-2">
@@ -243,7 +243,10 @@ const ViewSize = () => {
                                     <Tooltip content="Change Status">
                                       <span className="text-lg text-default-600 cursor-pointer active:opacity-70">
                                         <IoIosSwitch onClick={() => {
-                                            setStatus({active: row.isActive, sid: row.id ? row.id : 0});
+                                            setStatus({
+                                                active: row.isActive,
+                                                sid: row.id,
+                                            });
                                             onOpen();
                                         }}/>
                                       </span>
