@@ -2,9 +2,9 @@ import React, {useEffect, useState} from "react";
 import {addToast, Form, Input} from "@heroui/react";
 import BottomButtons from "@/components/bottom-buttons/BottomButtons.tsx";
 import {getSizeById, saveSize, updateSize} from "@/services/sizeService.ts";
-import type {SizeSaveDTO} from "@/models/size/SizeSaveDTO.ts";
+import type {SizeSaveDTO} from "@/models/SizeSaveDTO.ts";
 import {useNavigate, useParams} from "react-router-dom";
-import type {SizeGetDTO} from "@/models/size/SizeGetDTO.ts";
+import type {SizeGetDTO} from "@/models/SizeGetDTO.ts";
 
 const backUrl = "/admin-panel/sizes/view-sizes";
 

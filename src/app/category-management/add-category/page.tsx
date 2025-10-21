@@ -4,8 +4,8 @@ import {addToast, Form, Input} from "@heroui/react";
 import BottomButtons from "@/components/bottom-buttons/BottomButtons.tsx";
 import {getById, saveCategory, updateCategory} from "@/services/categoryService.ts";
 import {useNavigate, useParams} from "react-router-dom";
-import type {CategoryGetDTO} from "@/models/category/CategoryGetDTO.ts";
-import type {CategorySaveDTO} from "@/models/category/CategorySaveDTO.ts";
+import type {CategoryGetDTO} from "@/models/CategoryGetDTO.ts";
+import type {CategorySaveDTO} from "@/models/CategorySaveDTO.ts";
 
 const backUrl = "/admin-panel/category/view-category";
 

@@ -1,6 +1,6 @@
 import {axiosInstanceWithCredentials} from "../api/axiosInstance.ts";
 import type {PaginationDTO} from "@/models/PaginationDTO.ts";
-import type {SizeSaveDTO} from "@/models/size/SizeSaveDTO.ts";
+import type {SizeSaveDTO} from "@/models/SizeSaveDTO.ts";
 
 const SUB_URL: string = '/size';
 

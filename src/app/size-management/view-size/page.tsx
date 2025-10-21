@@ -19,7 +19,7 @@ import {
 import { CiSearch } from "react-icons/ci";
 import {useEffect, useState} from "react";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import type {SizeGetDTO} from "@/models/size/SizeGetDTO.ts";
+import type {SizeGetDTO} from "@/models/SizeGetDTO.ts";
 import NotFound from "@/pages/notFound.tsx";
 import { IoIosSwitch } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";

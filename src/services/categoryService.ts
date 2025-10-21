@@ -1,6 +1,6 @@
 import {axiosInstanceWithCredentials} from "../api/axiosInstance.ts";
 import type {PaginationDTO} from "@/models/PaginationDTO.ts";
-import type {CategorySaveDTO} from "@/models/category/CategorySaveDTO.ts";
+import type {CategorySaveDTO} from "@/models/CategorySaveDTO.ts";
 
 const SUB_URL: string = '/category';
 

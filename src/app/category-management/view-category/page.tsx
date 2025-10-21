@@ -17,7 +17,7 @@ import {changeCategoryStatus, searchCategoryByPagination} from "@/services/categ
 import { CiSearch } from "react-icons/ci";
 import {useEffect, useState} from "react";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import type {CategoryGetDTO} from "@/models/category/CategoryGetDTO.ts";
+import type {CategoryGetDTO} from "@/models/CategoryGetDTO.ts";
 import NotFound from "@/pages/notFound.tsx";
 import { IoIosSwitch } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
