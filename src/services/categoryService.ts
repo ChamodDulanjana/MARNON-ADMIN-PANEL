@@ -19,3 +19,8 @@ export const searchCategoryByPagination = async (
     );
     return response.data.data;
 }
+
+export const changeCategoryStatus = async (id: number, isActive: 0 | 1) => {
+    const response = await axiosInstanceWithCredentials.patch(`${SUB_URL}/status/change/${id}/${isActive}`);
+    return response.data;
+}

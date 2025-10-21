@@ -13,9 +13,7 @@ import {
     addToast,
     Spinner,
 } from "@heroui/react";
-import {
-    changeSizeStatus,
-} from "@/services/sizeService.ts";
+import {changeCategoryStatus, searchCategoryByPagination} from "@/services/categoryService.ts";
 import { CiSearch } from "react-icons/ci";
 import {useEffect, useState} from "react";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
@@ -30,7 +28,6 @@ import RowCountSelector from "@/components/rowCount-selector/page.tsx";
 import StatusSelector from "@/components/status-selector/page.tsx";
 import AddNewBtn from "@/components/addNew-btn/page.tsx";
 import {useNavigate} from "react-router-dom";
-import {searchCategoryByPagination} from "@/services/categoryService.ts";
 
 interface metaProps {
     total: number,
@@ -112,15 +109,15 @@ const ViewCategory = () => {
 
     /*Change Status handler*/
     const changeStatusHandler = async () => {
-        await changeSizeStatus(status.sid, status.active ? 0 : 1).then(async (res) => {
+        await changeCategoryStatus(status.sid, status.active ? 0 : 1).then(async (res) => {
             if (res.statusCode === 200) {
                 addToast({
                     title: "Success!",
-                    description: `Size has been ${status.active ? 'deactivated' : 'activated'} successfully.`,
+                    description: `Category has been ${status.active ? 'deactivated' : 'activated'} successfully.`,
                     color: "success",
                 });
                 // Refresh data from backend (no full reload)
-                await queryClient.invalidateQueries({ queryKey: ['size-by-id'] });
+                await queryClient.invalidateQueries({ queryKey: ['category-by-id'] });
             } else {
                 addToast({
                     title: "Status Change Failed",
