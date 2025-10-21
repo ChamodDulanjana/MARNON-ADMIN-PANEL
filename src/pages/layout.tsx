@@ -21,6 +21,12 @@ const Layout = () => {
     } else if (location.pathname.endsWith('/category/view-category')) {
         header = 'Category';
         description = 'Manage product categories here.';
+    } else if (location.pathname.endsWith('/category/add-category')) {
+        header = 'Add Category';
+        description = 'Add new categories here.';
+    } else if (location.pathname.endsWith('/category/edit-category')) {
+        header = 'Edit Category';
+        description = 'Edit categories here.';
     } else if (location.pathname.endsWith('/sizes/view-sizes')) {
         header = 'Sizes';
         description = 'Manage product sizes here.';

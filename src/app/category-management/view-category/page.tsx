@@ -51,7 +51,7 @@ const columns = [
     { key: 'modifyBy', label: 'Modify By' },
     { key: 'actions', label: 'Actions' },
 ];
-const addNewBtnUrl = "/admin-panel/sizes/add-sizes";
+const addNewBtnUrl = "/admin-panel/category/add-category";
 
 const ViewCategory = () => {
     const navigate = useNavigate();
@@ -188,6 +188,7 @@ const ViewCategory = () => {
 
             {/*Table content*/}
             <Table
+                aria-label="categoty-table"
                 sortDescriptor={list.sortDescriptor}
                 onSortChange={list.sort}
                 bottomContent={
@@ -226,7 +227,7 @@ const ViewCategory = () => {
                                 <div className="relative flex items-center gap-2">
                                     <Tooltip content="Edit">
                                       <span className="text-lg text-default-600 cursor-pointer active:opacity-60">
-                                        <CiEdit onClick={() => navigate(`/admin-panel/sizes/edit-sizes/${row.id}`)}/>
+                                        <CiEdit onClick={() => navigate(`/admin-panel/category/edit-category/${row.id}`)}/>
                                       </span>
                                     </Tooltip>
                                     <Tooltip content="Change Status">

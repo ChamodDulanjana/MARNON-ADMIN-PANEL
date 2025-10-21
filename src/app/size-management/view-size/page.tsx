@@ -193,7 +193,7 @@ const ViewSize = () => {
 
             {/*Table content*/}
             <Table
-                aria-label="Example table with dynamic content"
+                aria-label="size-table"
                 sortDescriptor={list.sortDescriptor}
                 onSortChange={list.sort}
                 bottomContent={
