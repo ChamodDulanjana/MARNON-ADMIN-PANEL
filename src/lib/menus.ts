@@ -23,7 +23,7 @@ export const menus = [
     },
     {
         title: "Sizes",
-        url: "/admin-panel/sizes/view-sizes",
+        url: "/admin-panel/sizes",
         icon: IoResizeSharp,
     },
     {

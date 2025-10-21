@@ -4,6 +4,8 @@ import Dashboard from "@/app/dashboard/page.tsx";
 import {HeroUIProvider, ToastProvider} from "@heroui/react";
 import ViewSize from "@/app/size-management/view-size/page.tsx";
 import AddSize from "@/app/size-management/add-size/page.tsx";
+import ViewCategory from "@/app/category-management/view-category/page.tsx";
+import AddCategory from "@/app/category-management/add-category/page.tsx";
 
 function App() {
 
@@ -29,6 +31,15 @@ function App() {
                             <Route path="view-sizes" element={<ViewSize />} />
                             <Route path="add-sizes" element={<AddSize />} />
                             <Route path="edit-sizes/:id" element={<AddSize />} />
+                        </Route>
+
+                        {/* Group category routes */}
+                        <Route path="category">
+                            {/* Redirect /admin-panel/category → /admin-panel/category/view-category */}
+                            <Route index element={<Navigate to="view-category" replace />} />
+                            <Route path="view-category" element={<ViewCategory />} />
+                            <Route path="add-category" element={<AddCategory />} />
+                            <Route path="edit-category/:id" element={<AddCategory />} />
                         </Route>
                     </Route>
                 </Routes>
