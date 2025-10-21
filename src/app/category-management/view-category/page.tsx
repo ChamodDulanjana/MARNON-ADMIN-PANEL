@@ -191,6 +191,7 @@ const ViewCategory = () => {
                 aria-label="categoty-table"
                 sortDescriptor={list.sortDescriptor}
                 onSortChange={list.sort}
+                className="px-0.5"
                 bottomContent={
                     <RowCountSelector selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys}/>
                 }

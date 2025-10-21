@@ -3,7 +3,7 @@ import { PiDressDuotone } from "react-icons/pi";
 import { BiCategoryAlt } from "react-icons/bi";
 import { IoResizeSharp } from "react-icons/io5";
 import { FiUser } from "react-icons/fi";
-import { FaRegImages } from "react-icons/fa6";
+//import { FaRegImages } from "react-icons/fa6";
 
 export const menus = [
     {
@@ -31,9 +31,9 @@ export const menus = [
         url: "/admin-panel/users",
         icon: FiUser,
     },
-    {
+  /*  {
         title: "Home Page Images",
         url: "/admin-panel/home-page-images",
         icon: FaRegImages,
-    },
+    },*/
 ]

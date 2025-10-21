@@ -36,7 +36,7 @@ const Layout = () => {
     } else if (location.pathname.includes('/sizes/edit-sizes/')) {
         header = 'Edit Sizes';
         description = 'Edit sizes here.';
-    } else if (location.pathname.endsWith('/users')) {
+    } else if (location.pathname.endsWith('/users/view-users')) {
         header = 'Users';
         description = 'Manage users and their roles here.';
     } else if (location.pathname.endsWith('/home-page-images')) {
@@ -53,7 +53,7 @@ const Layout = () => {
                     <SideNavigation />
 
                     {/* Main Content Area */}
-                    <div className="w-full px-6 py-8">
+                    <div className="w-full overflow-y-hidden px-6 py-8">
                         {/* Page header */}
                         <div className="mb-10">
                             <div className="flex mb-2">
