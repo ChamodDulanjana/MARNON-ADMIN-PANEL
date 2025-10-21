@@ -53,7 +53,7 @@ const Layout = () => {
                     <SideNavigation />
 
                     {/* Main Content Area */}
-                    <div className="w-full overflow-y-hidden px-6 py-8">
+                    <div className="w-full overflow-y-hidden px-4 md:px-6 py-8">
                         {/* Page header */}
                         <div className="mb-10">
                             <div className="flex mb-2">

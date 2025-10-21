@@ -21,10 +21,15 @@ const RowCountSelector = ({selectedKeys, setSelectedKeys}: Props) => {
     }, [selectedKeys]);
 
     return (
-        <div className="flex justify-end pr-4 mt-2">
-            <Dropdown>
+        <div className=" flex justify-end items-center mr-2 mt-4 gap-2">
+            <p className='text-sm italic'>Lines per page</p>
+            <Dropdown className="">
                 <DropdownTrigger>
-                    <Button variant="faded" endContent={<FaChevronDown className="text-[12px] ml-1"/>}>
+                    <Button
+                        variant="faded"
+                        className="rounded-sm"
+                        endContent={<FaChevronDown className="text-[12px] ml-1"/>}
+                    >
                         {selectedValue}
                     </Button>
                 </DropdownTrigger>

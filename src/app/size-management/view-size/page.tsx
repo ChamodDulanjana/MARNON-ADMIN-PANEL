@@ -197,9 +197,6 @@ const ViewSize = () => {
                 sortDescriptor={list.sortDescriptor}
                 onSortChange={list.sort}
                 className="px-0.5"
-                bottomContent={
-                    <RowCountSelector selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys}/>
-                }
             >
                 <TableHeader>
                     {columns.map((column) =>
@@ -253,6 +250,9 @@ const ViewSize = () => {
                     )}
                 </TableBody>
             </Table>
+
+            {/*Row Count Selector*/}
+            <RowCountSelector selectedKeys={selectedKeys} setSelectedKeys={setSelectedKeys}/>
 
             {/*Pagination*/}
             <CustomPagination
