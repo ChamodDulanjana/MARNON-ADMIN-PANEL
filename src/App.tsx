@@ -7,6 +7,7 @@ import AddSize from "@/app/size-management/add-size/page.tsx";
 import ViewCategory from "@/app/category-management/view-category/page.tsx";
 import AddCategory from "@/app/category-management/add-category/page.tsx";
 import ViewUser from "@/app/user-management/view-user/page.tsx";
+import AddUser from "@/app/user-management/add-user/page.tsx";
 
 function App() {
 
@@ -48,8 +49,8 @@ function App() {
                             {/* Redirect /admin-panel/users → /admin-panel/users/view-users */}
                             <Route index element={<Navigate to="view-users" replace />} />
                             <Route path="view-users" element={<ViewUser />} />
-                            <Route path="add-users" element={<ViewUser />} />
-                            <Route path="edit-users/:id" element={<ViewUser />} />
+                            <Route path="add-users" element={<AddUser />} />
+                            <Route path="edit-users/:id" element={<AddUser />} />
                         </Route>
                     </Route>
                 </Routes>

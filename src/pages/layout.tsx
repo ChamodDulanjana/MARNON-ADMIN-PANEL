@@ -39,6 +39,12 @@ const Layout = () => {
     } else if (location.pathname.endsWith('/users/view-users')) {
         header = 'Users';
         description = 'Manage users and their roles here.';
+    } else if (location.pathname.endsWith('/users/add-users')) {
+        header = 'Add Users';
+        description = 'Add new users here.';
+    } else if (location.pathname.includes('/users/edit-users/')) {
+        header = 'Edit Users';
+        description = 'Edit users here.';
     } else if (location.pathname.endsWith('/home-page-images')) {
         header = 'Home Page Images';
         description = 'Manage images displayed on the home page.';

@@ -56,7 +56,7 @@ const columns = [
     { key: 'modifyBy', label: 'Modify By' },
     { key: 'actions', label: 'Actions' },
 ];
-const addNewBtnUrl = "/admin-panel/category/add-category";
+const addNewBtnUrl = "/admin-panel/users/add-users";
 
 const ViewUser = () => {
     const navigate = useNavigate();
@@ -236,7 +236,7 @@ const ViewUser = () => {
                                 <div className="relative flex items-center gap-2">
                                     <Tooltip content="Edit">
                                       <span className="text-lg text-default-600 cursor-pointer active:opacity-60">
-                                        <CiEdit onClick={() => navigate(`/admin-panel/category/edit-category/${row.id}`)}/>
+                                        <CiEdit onClick={() => navigate(`/admin-panel/users/edit-users/${row.id}`)}/>
                                       </span>
                                     </Tooltip>
                                     <Tooltip content="Change Status">
